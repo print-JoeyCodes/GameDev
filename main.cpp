@@ -1,9 +1,7 @@
+#include <iostream>
 #include "/opt/homebrew/opt/raylib/include/raylib.h"
 
-#ifdef __APPLE__
-#include <ApplicationServices/ApplicationServices.h>
-#endif
-
+using namespace std;
 
 int playerScore = 0;
 int cpuScore = 0;
