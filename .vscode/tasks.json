@@ -1,31 +1,17 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Build Portable Pong",
-      "type": "shell",
-      "command": "mkdir -p Pong.app/Contents/{MacOS,Resources,Frameworks} && clang++ -o Pong.app/Contents/MacOS/Pong main.cpp -I/opt/homebrew/opt/raylib/include -LPong.app/Contents/Frameworks -lraylib -std=c++17 -framework OpenGL -framework Cocoa -framework IOKit -Wl,-rpath,@executable_path/../Frameworks && cp -r /opt/homebrew/opt/raylib/lib/libraylib.*.dylib Pong.app/Contents/Frameworks/ && install_name_tool -change /opt/homebrew/opt/raylib/lib/libraylib.dylib @rpath/libraylib.dylib Pong.app/Contents/MacOS/Pong",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
-    },
-    {
-      "label": "Create DMG",
-      "type": "shell",
-      "command": "hdiutil create -volname 'Pong' -srcfolder Pong.app -ov -format UDZO Pong.dmg",
-      "dependsOn": "Build Portable Pong"
-    },
-    {
-      "label": "Run (No Terminal)",
-      "type": "shell",
-      "command": "open Pong.app",
-      "dependsOn": "Build Portable Pong"
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build & Run Pong",
+            "type": "shell",
+            "command": "clang++ -o Pong main.cpp -I/opt/homebrew/opt/raylib/include -L/opt/homebrew/opt/raylib/lib -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework ApplicationServices -std=c++17 && ./Pong",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "never"
+            }
+        }
+    ]
 }
