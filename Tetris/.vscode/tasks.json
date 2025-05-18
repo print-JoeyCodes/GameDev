@@ -2,13 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build & Run Tetris",
+            "label": "Build & Run Current Project",
             "type": "shell",
             "command": "clang++",
             "args": [
-                "${file}",  // Uses currently active file
-                "-o", "${fileDirname}/Tetris",
+                "main.cpp",                  // main.cpp
+                "${fileDirname}/grid.cpp",  // grid.cpp implementation
+                "-I${fileDirname}",         // For finding grid.h
                 "-I/opt/homebrew/include",
+                "-o", "${fileDirname}/${workspaceFolderBasename}",
                 "-L/opt/homebrew/lib",
                 "-lraylib",
                 "-framework", "OpenGL",
@@ -16,13 +18,13 @@
                 "-framework", "IOKit",
                 "-framework", "CoreVideo",
                 "-std=c++17",
-                "&&", "${fileDirname}/Tetris"
+                "&&", "${fileDirname}/${workspaceFolderBasename}"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": [],
+            "problemMatcher": ["$gcc"],
             "presentation": {
                 "reveal": "always"
             }
