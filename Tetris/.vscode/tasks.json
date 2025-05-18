@@ -2,13 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build & Run Current Project",
+            "label": "Build & Run Project",
             "type": "shell",
             "command": "clang++",
             "args": [
-                "main.cpp",                  // main.cpp
-                "${fileDirname}/grid.cpp",  // grid.cpp implementation
-                "-I${fileDirname}",         // For finding grid.h
+                "${fileDirname}/*.cpp",    // Compiles ALL .cpp files
+                "-I${fileDirname}",         // Finds all local headers
                 "-I/opt/homebrew/include",
                 "-o", "${fileDirname}/${workspaceFolderBasename}",
                 "-L/opt/homebrew/lib",
