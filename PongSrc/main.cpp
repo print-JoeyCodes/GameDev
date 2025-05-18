@@ -117,7 +117,7 @@ int main () {
 
     InitWindow(screenWidth,screenHeight,"My Pong Game");
     SetTargetFPS(60);
-
+    
     ball.radius = 20;
     ball.x = screenWidth/2;
     ball.y = screenHeight/2;

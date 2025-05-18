@@ -2,12 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build & Run Tetris",
+            "label": "Build & Run Pong",
             "type": "shell",
             "command": "clang++",
             "args": [
                 "${file}",  // Uses currently active file
-                "-o", "${fileDirname}/Tetris",
+                "-o", "${fileDirname}/Pong",
                 "-I/opt/homebrew/include",
                 "-L/opt/homebrew/lib",
                 "-lraylib",
@@ -16,7 +16,7 @@
                 "-framework", "IOKit",
                 "-framework", "CoreVideo",
                 "-std=c++17",
-                "&&", "${fileDirname}/Tetris"
+                "&&", "${fileDirname}/Pong"
             ],
             "group": {
                 "kind": "build",
