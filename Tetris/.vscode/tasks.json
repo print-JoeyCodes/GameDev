@@ -2,30 +2,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build & Run Project",
+            "label": "Build & Run Tetris",
             "type": "shell",
-            "command": "clang++",
-            "args": [
-                "${fileDirname}/*.cpp",    // Compiles ALL .cpp files
-                "-I${fileDirname}",         // Finds all local headers
-                "-I/opt/homebrew/include",
-                "-o", "${fileDirname}/${workspaceFolderBasename}",
-                "-L/opt/homebrew/lib",
-                "-lraylib",
-                "-framework", "OpenGL",
-                "-framework", "Cocoa",
-                "-framework", "IOKit",
-                "-framework", "CoreVideo",
-                "-std=c++17",
-                "&&", "${fileDirname}/${workspaceFolderBasename}"
-            ],
+            "command": "cd ${workspaceFolder} && mkdir -p bin && clang++ $(find src -name '*.cpp') -std=c++17 -Iinclude -Isrc -I/opt/homebrew/include -L/opt/homebrew/lib -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -o bin/Tetris && bin/Tetris",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "problemMatcher": ["$gcc"],
             "presentation": {
-                "reveal": "always"
+                "reveal": "always",
+                "panel": "dedicated"
             }
         }
     ]
