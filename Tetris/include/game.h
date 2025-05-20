@@ -9,14 +9,19 @@ class Game {
         std::vector<Block> GetAllBlocks();
         void Draw();
         void HandleInPut();
-        void moveBlockLeft();
-        void moveBlockRight();
-        void moveBlockDown();
+        void MoveBlockLeft();
+        void MoveBlockRight();
+        void MoveBlockDown();
         Grid grid;
+        bool gameOver;
 
     private:
         std::vector<Block> blocks;
         Block currentBlock;
         Block nextBlock;
         bool IsBlockOutside();
+        bool BlockFits();
+        void RotateBlock();
+        void LockBlock();
+        void Reset();
 };
