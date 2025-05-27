@@ -1,17 +1,26 @@
 #include "/opt/homebrew/opt/raylib/include/raylib.h"
+#include "boat.h"
+
+Color oceanBlue = {87, 217, 250, 255};
+
+ 
 
 int main() {
-
-    InitWindow(800, 600, "Raylib Window");
-
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    const char *windowTitle = "Dropshipper";
+    InitWindow(screenWidth, screenHeight, windowTitle);
     SetTargetFPS(60);
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
+    Boat boat;
+    
     while (!WindowShouldClose()) {
-
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        boat.Update();
+    
+        ClearBackground(oceanBlue);
 
-        DrawText("Hello, Raylib!", 350, 280, 20, DARKGRAY);
 
         EndDrawing();
     }
