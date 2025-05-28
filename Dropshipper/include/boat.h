@@ -3,22 +3,27 @@
 
 class Boat {
     public:
-        Boat();
+        Boat(int right, int left, int up, int down, Color color);
         void Update();
-        
+        Color color;
+    
     private:
-        void HandleInput();
+        int right, left, up, down;
         void Draw();
+        void HandleInput();
         void Reset();
+        int RotationMultiplier();
         float x;
         float y;
         float width;
         float deckHeight;
         float tipHeight;
         float height;
-        int rotation;
+        float rotation;
         float speed;
-        double resistance = .01;
+        float rotationSpeed;
+        double resistance = .008f;
+        float centerYoffset;
         Vector2 center;
         Vector2 vertice1;
         Vector2 vertice2;

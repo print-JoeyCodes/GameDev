@@ -2,7 +2,7 @@
 #include "boat.h"
 
 Color oceanBlue = {87, 217, 250, 255};
-
+Color brown = {67, 47, 33, 255};
  
 
 int main() {
@@ -13,8 +13,8 @@ int main() {
     SetTargetFPS(60);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
-    Boat boat;
-    
+    Boat boat(KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN, brown);    
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         boat.Update();
