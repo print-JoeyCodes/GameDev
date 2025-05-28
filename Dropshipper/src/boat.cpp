@@ -69,8 +69,6 @@ void Boat::Update() {
     rotatedVertice1 = RotatePoint(vertice1, center, rotation * DEG2RAD);
     rotatedVertice2 = RotatePoint(vertice2, center, rotation * DEG2RAD);
     rotatedVertice3 = RotatePoint(vertice3, center, rotation * DEG2RAD);
-    
-    Draw();
 }
 
 int Boat::RotationMultiplier() {
@@ -88,8 +86,8 @@ int Boat::RotationMultiplier() {
 }
 
 void Boat::Reset() {
-    x = 200;
-    y = 200;
+    x = GetScreenWidth() / 2;
+    y = GetScreenHeight() / 2;
     width = 80;
     tipHeight = 60;
     deckHeight = 150;

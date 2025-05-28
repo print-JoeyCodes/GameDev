@@ -6,10 +6,11 @@ class Boat {
         Boat(int right, int left, int up, int down, Color color);
         void Update();
         Color color;
+        Vector2 GetCenter() { return center; }
+        void Draw();
     
     private:
         int right, left, up, down;
-        void Draw();
         void HandleInput();
         void Reset();
         int RotationMultiplier();
