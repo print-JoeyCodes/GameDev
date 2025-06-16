@@ -1,4 +1,4 @@
-#include "boat.h"
+#include "boat.hpp"
 #include "/opt/homebrew/opt/raylib/include/raymath.h"
 
 
@@ -18,7 +18,7 @@ Vector2 RotatePoint(Vector2 point, Vector2 center, float angle) {
 }
 
 void Boat::Draw() {
-    DrawRectanglePro({center.x, center.y, width, deckHeight}, {width/2, centerYoffset}, rotation, color);
+    DrawRectanglePro(base, {width/2, centerYoffset}, rotation, color);
     DrawTriangle(rotatedVertice1, rotatedVertice2, rotatedVertice3, color);
     //DrawCircleV(center, 5, RED);
 }
@@ -61,6 +61,8 @@ void Boat::Update() {
     
     center.x += sinf(rotation * DEG2RAD) * speed;
     center.y -= cosf(rotation * DEG2RAD) * speed;
+
+    base = {center.x, center.y, width, deckHeight};
     
     vertice1 = {center.x - width / 2, center.y - centerYoffset};
     vertice2 = {center.x + width / 2, center.y - centerYoffset};
@@ -97,4 +99,5 @@ void Boat::Reset() {
     rotationSpeed = 0;
     center = {x + width / 2, y + deckHeight / 2};
     centerYoffset = deckHeight / 2;
+    base = {center.x, center.y, width, deckHeight};
 }

@@ -1,4 +1,4 @@
-#include "background.h"
+#include "background.hpp"
 #include <cmath>
 
 Background::Background(int width) {

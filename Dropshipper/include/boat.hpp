@@ -8,28 +8,29 @@ class Boat {
         Color color;
         Vector2 GetCenter() { return center; }
         void Draw();
+        float x;
+        float y;
+        float width;
+        float height;
+        float speed;
+        float rotationSpeed;
+        Vector2 rotatedVertice1;
+        Vector2 rotatedVertice2;
+        Vector2 rotatedVertice3;
+        Rectangle base;
+        float rotation;
     
     private:
         int right, left, up, down;
         void HandleInput();
         void Reset();
         int RotationMultiplier();
-        float x;
-        float y;
-        float width;
         float deckHeight;
         float tipHeight;
-        float height;
-        float rotation;
-        float speed;
-        float rotationSpeed;
         double resistance = .008f;
-        float centerYoffset;
         Vector2 center;
+        float centerYoffset;
         Vector2 vertice1;
         Vector2 vertice2;
         Vector2 vertice3;
-        Vector2 rotatedVertice1;
-        Vector2 rotatedVertice2;
-        Vector2 rotatedVertice3;
 };
