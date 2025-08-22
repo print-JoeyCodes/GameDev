@@ -1,15 +1,16 @@
 #include "tank.hpp"
 
-Tank::Tank(float x, float y, Color color) {
+Tank::Tank(float x, float y, Color tankColor, Color cannonColor) {
     this->x = x;
     this->y = y;
-    this->color = color;
+    this->tankColor = tankColor;
+    this->cannonColor = cannonColor;
     cannon = {x, y, 85, 25};
 }
 
 void Tank::Draw() {
-    DrawRectanglePro(cannon, {0, 12.5}, cannonRotation, BLUE);
-    DrawCircle(x, y, radius, color);
+    DrawRectanglePro(cannon, {0, 12.5}, cannonRotation, cannonColor);
+    DrawCircle(x, y, radius, tankColor);
 }
 
 void Tank::MoveCannon(KeyboardKey left, KeyboardKey right) {
@@ -32,4 +33,8 @@ void Tank::MoveTank(float x, float y) {
     this->x = x;
     this->y = y;
     cannon = {x, y, 85, 25};
+}
+
+void Tank::Launch() {
+    Bullet bullet(*this);
 }
