@@ -18,7 +18,7 @@
         {
             "label": "Clean Build",
             "type": "shell",
-            "command": "cd ${workspaceFolder} && rm -f Tanks",
+            "command": "cd ${workspaceFolder} && rm -f Game",
             "group": "none"
         }
     ]

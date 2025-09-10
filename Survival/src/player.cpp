@@ -5,43 +5,76 @@ Player::Player(Vector2 position) : position(position), speed(200.0f) {
     hitbox = { position.x, position.y, 50.0f, 50.0f };
 }
 
-void Player::Update(std::vector<Tree>& trees) {
-    if (IsKeyDown(KEY_UP)) position.y -= speed * GetFrameTime();
-    if (IsKeyDown(KEY_DOWN)) position.y += speed * GetFrameTime();
-    if (IsKeyDown(KEY_LEFT)) position.x -= speed * GetFrameTime();
-    if (IsKeyDown(KEY_RIGHT)) position.x += speed * GetFrameTime();
+void Player::Update(std::vector<Tree>& trees, std::vector<Stone>& stones) {
+    Vector2 proposedPosition = position;
 
-    CheckCollisions(hitbox);
+    if (IsKeyDown(KEY_W)||IsKeyDown(KEY_UP)) proposedPosition.y -= speed * GetFrameTime();
+    if (IsKeyDown(KEY_S)||IsKeyDown(KEY_DOWN)) proposedPosition.y += speed * GetFrameTime();
+    if (IsKeyDown(KEY_A)||IsKeyDown(KEY_LEFT)) proposedPosition.x -= speed * GetFrameTime();
+    if (IsKeyDown(KEY_D)||IsKeyDown(KEY_RIGHT)) proposedPosition.x += speed * GetFrameTime();
 
-    hitbox.x = position.x;
-    hitbox.y = position.y;
+    Rectangle proposedHitbox = hitbox;
+    proposedHitbox.x = proposedPosition.x;
+    proposedHitbox.y = proposedPosition.y;
+
+    bool collision = false;
+    for (auto& tree : trees) {
+        if (CheckCollisionRecs(proposedHitbox, tree.GetHitbox())) {
+            collision = true;
+            break;
+        }
+    }
+
+     for (auto& stone : stones) {
+        if (CheckCollisionRecs(proposedHitbox, stone.GetHitbox())) {
+            collision = true;
+            break;
+        }
+    }
+
+
+
+    if (!collision) {
+        lastSafePosition = position;
+        position = proposedPosition;
+    }
 
     for (auto it = trees.begin(); it != trees.end(); ++it) {
-        CheckCollisions(it->GetHitbox());
-        if (isColliding && IsKeyPressed(KEY_E)) {
+        if (CheckCollisionCircleRec(
+                {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
+                interactionRadius,
+                it->GetHitbox())
+            && IsKeyPressed(KEY_E)) {
             trees.erase(it);
             woodCollected += 1;
             break;
         }
     }
 
-    Draw();
-}
+    for (auto it = stones.begin(); it != stones.end(); ++it) {
+        if (CheckCollisionCircleRec(
+                {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
+                interactionRadius,
+                it->GetHitbox())
+            && IsKeyPressed(KEY_E)) {
+            stones.erase(it);
+            stoneCollected += 1;
+            break;
+        }
+    }
 
-void Player::Draw() {
-    DrawRectangleRec(hitbox, BLUE);
-}
-
-void Player::CheckCollisions(Rectangle obstacle) {
     if (position.x <= 0) position.x = 0;
     if (position.y <= 0) position.y = 0;
     if (position.x + hitbox.width > GetScreenWidth()) position.x = GetScreenWidth() - hitbox.width;
     if (position.y + hitbox.height > GetScreenHeight()) position.y = GetScreenHeight() - hitbox.height;
+    
+    hitbox.x = position.x;
+    hitbox.y = position.y;
+    
+    Draw();
+}
 
-    if (CheckCollisionRecs(hitbox, obstacle)) {
-        isColliding = true;
-    }
-    else {
-        isColliding = false;
-    }
+void Player::Draw() {
+    DrawCircle(position.x + hitbox.width / 2, position.y + hitbox.height / 2, interactionRadius, Fade(GREEN, 0.4f));
+    DrawRectangleRec(hitbox, BLUE);
 }

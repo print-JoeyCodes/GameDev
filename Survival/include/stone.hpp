@@ -1,9 +1,9 @@
 #pragma once
 #include "/opt/homebrew/opt/raylib/include/raylib.h"
 
-class Tree {
+class Stone {
 public:
-    Tree(Vector2 position);
+    Stone(Vector2 position);
     void Draw(Texture2D spriteSheet);
     Rectangle GetHitbox() const { return hitbox; }
 
