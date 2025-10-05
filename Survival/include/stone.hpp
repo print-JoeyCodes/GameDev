@@ -6,6 +6,7 @@ public:
     Stone(Vector2 position);
     void Draw(Texture2D spriteSheet);
     Rectangle GetHitbox() const { return hitbox; }
+    int stoneAmount = 3;
 
 private:
     Vector2 position;

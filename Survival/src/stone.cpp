@@ -2,12 +2,12 @@
 #include <vector>
 
 Stone::Stone(Vector2 position) : position(position) {
-    hitbox = { position.x, position.y, 70.0f, 80.0f };
+    hitbox = { position.x, position.y, 137.5f, 99.75f };
 
 }
 
 
 void Stone::Draw(Texture2D spriteSheet) {
-    DrawTexturePro(spriteSheet, {220,0, 330, 300}, {position.x, position.y, hitbox.width, hitbox.height},{0,0}, 0,RAYWHITE);
-    DrawRectangleLinesEx(hitbox, 5, RED);
+    DrawTexturePro(spriteSheet, {414,0, 550, 399}, {position.x, position.y, hitbox.width, hitbox.height},{0,0}, 0,RAYWHITE);
+    //DrawRectangleLinesEx(hitbox, 5, RED);
 }

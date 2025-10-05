@@ -1,7 +1,9 @@
 #include "player.hpp"
+#include "inventory.hpp"
 #include <vector>
 
-Player::Player(Vector2 position) : position(position), speed(200.0f) {
+Player::Player(Vector2 position)
+    : position(position), speed(200.0f), playerInventory(5) {
     hitbox = { position.x, position.y, 50.0f, 50.0f };
 }
 
@@ -12,6 +14,13 @@ void Player::Update(std::vector<Tree>& trees, std::vector<Stone>& stones) {
     if (IsKeyDown(KEY_S)||IsKeyDown(KEY_DOWN)) proposedPosition.y += speed * GetFrameTime();
     if (IsKeyDown(KEY_A)||IsKeyDown(KEY_LEFT)) proposedPosition.x -= speed * GetFrameTime();
     if (IsKeyDown(KEY_D)||IsKeyDown(KEY_RIGHT)) proposedPosition.x += speed * GetFrameTime();
+
+    if (IsKeyPressed(KEY_Q)) {
+        if(!inventory.empty()) {
+            inventory.pop_back();
+            playerInventory.RemoveItem(inventory.size());
+        }
+    }
 
     Rectangle proposedHitbox = hitbox;
     proposedHitbox.x = proposedPosition.x;
@@ -38,30 +47,44 @@ void Player::Update(std::vector<Tree>& trees, std::vector<Stone>& stones) {
         lastSafePosition = position;
         position = proposedPosition;
     }
-
-    for (auto it = trees.begin(); it != trees.end(); ++it) {
-        if (CheckCollisionCircleRec(
-                {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
-                interactionRadius,
-                it->GetHitbox())
-            && IsKeyPressed(KEY_E)) {
-            trees.erase(it);
-            woodCollected += 1;
-            break;
+    if(inventory.size() < 5) {
+        for (auto it = trees.begin(); it != trees.end(); ++it) {
+            if (CheckCollisionCircleRec(
+                    {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
+                    interactionRadius,
+                    it->GetHitbox())
+                && IsKeyPressed(KEY_E)) {
+                    if(it->woodAmount > 0) {
+                        it->woodAmount -= 1;
+                        inventory.push_back(1);
+                        playerInventory.AddItem(1);
+                    }
+                    if(it->woodAmount <= 0){
+                        trees.erase(it);
+                    }
+                    break;
+                }
         }
-    }
 
-    for (auto it = stones.begin(); it != stones.end(); ++it) {
-        if (CheckCollisionCircleRec(
-                {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
-                interactionRadius,
-                it->GetHitbox())
-            && IsKeyPressed(KEY_E)) {
-            stones.erase(it);
-            stoneCollected += 1;
-            break;
+        for (auto it = stones.begin(); it != stones.end(); ++it) {
+            if (CheckCollisionCircleRec(
+                    {position.x + hitbox.width / 2, position.y + hitbox.height / 2}, // center of player
+                    interactionRadius,
+                    it->GetHitbox())
+                && IsKeyPressed(KEY_E)) {
+                if(it->stoneAmount > 0) {
+                        it->stoneAmount -= 1;
+                        inventory.push_back(2);
+                        playerInventory.AddItem(2);
+                    }
+                    if(it->stoneAmount <= 0){
+                        stones.erase(it);
+                    }
+                    break;
+                break;
+            }
         }
-    }
+    };
 
     if (position.x <= 0) position.x = 0;
     if (position.y <= 0) position.y = 0;
@@ -70,11 +93,10 @@ void Player::Update(std::vector<Tree>& trees, std::vector<Stone>& stones) {
     
     hitbox.x = position.x;
     hitbox.y = position.y;
-    
-    Draw();
 }
 
-void Player::Draw() {
-    DrawCircle(position.x + hitbox.width / 2, position.y + hitbox.height / 2, interactionRadius, Fade(GREEN, 0.4f));
+void Player::Draw(int screenWidth,int screenHeight) {
+    //DrawCircle(position.x + hitbox.width / 2, position.y + hitbox.height / 2, interactionRadius, Fade(GREEN, 0.4f));
     DrawRectangleRec(hitbox, BLUE);
+    playerInventory.Draw(screenWidth,screenHeight);
 }

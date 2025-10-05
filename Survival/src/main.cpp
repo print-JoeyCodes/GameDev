@@ -2,21 +2,27 @@
 #include "player.hpp"
 #include "tree.hpp"
 #include "stone.hpp"
+#include "inventory.hpp"
 #include <vector>
 
 int main() {
-    const int screenWidth = 800;
-    const int screenHeight = 600;
+    int screenWidth = 800;
+    int screenHeight = 600;
+    bool craftingOpen = false;
 
     Player player({100.0f, 100.0f});
     std::vector<Tree> trees;
     std::vector<Stone> stones;
+    Color GRASS_GREEN = {148,196,104,255};
+    Inventory craftingInventory(3);
 
-
+   
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(screenWidth, screenHeight, "Survival Game");
 
 
-    Texture2D spriteSheet = LoadTexture("Survival Game Sprites.png");
+
+    Texture2D spriteSheet = LoadTexture("Tree-Stone-sprites.png");
 
     SetTargetFPS(60);
 
@@ -24,29 +30,68 @@ int main() {
 
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
-
-        if(IsKeyPressed(KEY_T)) {
-            for(int i = 0; i < 10; i++) {
-                trees.emplace_back(Vector2{static_cast<float>(GetRandomValue(0, screenWidth - 50)), static_cast<float>(GetRandomValue(0, screenHeight - 80))});
+        ClearBackground(GRASS_GREEN);
+        if(IsKeyPressed(KEY_C)) {
+                craftingOpen ? craftingOpen = false : craftingOpen = true;
             }
+        if(!craftingOpen) {   
+            if(IsKeyPressed(KEY_T)) {
+                for(int i = 0; i < 5; i++) {
+                    trees.emplace_back(Vector2{static_cast<float>(GetRandomValue(0, GetScreenWidth() - 50)), static_cast<float>(GetRandomValue(0, GetScreenHeight() - 80))});
+                }
+                for(int i = 0; i < 3; i++) {
+                    stones.emplace_back(Vector2{static_cast<float>(GetRandomValue(0,  GetScreenWidth() - 50)), static_cast<float>(GetRandomValue(0, GetScreenHeight() - 80))});
+                }
+            }
+            
+            player.Update(trees, stones);
         }
-
-
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            stones.emplace_back(GetMousePosition());
-        }
-
-        for (auto& tree : trees) {
-            tree.Draw(spriteSheet);
-        }
+        
         for (auto& stone : stones) {
             stone.Draw(spriteSheet);
         }
-        player.Update(trees, stones);
+        for (auto& tree : trees) {
+            tree.Draw(spriteSheet);
+        }
 
-        DrawText(("Wood Collected: " + std::to_string(player.woodCollected)).c_str(), 10, 10, 20, BLACK);
-        DrawText(("Stone Collected: " + std::to_string(player.stoneCollected)).c_str(), 10, 30, 20, BLACK);
+        player.Draw(GetScreenWidth()/2-225,GetScreenHeight()-100);
+
+        if(craftingOpen) {
+            DrawRectangle(100, 50, GetScreenWidth() - 200, GetScreenHeight() - 250, GRAY);
+            DrawText("Crafting Menu (Press C to close)", 120, 120, 20, DARKGRAY);
+            craftingInventory.Draw(120,180);
+            if(IsKeyPressed(KEY_ONE)) {
+                if(player.GetItemType(0) != 0) {
+                    craftingInventory.AddItem(player.GetItemType(0));
+                    player.RemoveItem(0);
+                }
+            }
+            if(IsKeyPressed(KEY_TWO)) {
+                if(player.GetItemType(1) != 0) {
+                    craftingInventory.AddItem(player.GetItemType(1));
+                    player.RemoveItem(1);
+                }
+            }
+            if(IsKeyPressed(KEY_THREE)) {
+                if(player.GetItemType(2) != 0) {
+                    craftingInventory.AddItem(player.GetItemType(2));
+                    player.RemoveItem(2);
+                }
+            }
+            if(IsKeyPressed(KEY_FOUR)) {
+                if(player.GetItemType(3) != 0) {
+                    craftingInventory.AddItem(player.GetItemType(3));
+                    player.RemoveItem(3);
+                }
+            }
+            if(IsKeyPressed(KEY_FIVE)) {
+                if(player.GetItemType(4) != 0) {
+                    craftingInventory.AddItem(player.GetItemType(4));
+                    player.RemoveItem(4);
+                }
+            }
+        }
+
 
         EndDrawing();
     }
