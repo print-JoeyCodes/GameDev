@@ -8,12 +8,21 @@ Player::Player(Vector2 position)
 }
 
 void Player::Update(std::vector<Tree>& trees, std::vector<Stone>& stones) {
-    Vector2 proposedPosition = position;
+    Vector2 input = {0, 0};
+    if (IsKeyDown(KEY_W)||IsKeyDown(KEY_UP)) input.y -= 1;
+    if (IsKeyDown(KEY_S)||IsKeyDown(KEY_DOWN)) input.y += 1;
+    if (IsKeyDown(KEY_A)||IsKeyDown(KEY_LEFT)) input.x -= 1;
+    if (IsKeyDown(KEY_D)||IsKeyDown(KEY_RIGHT)) input.x += 1;
 
-    if (IsKeyDown(KEY_W)||IsKeyDown(KEY_UP)) proposedPosition.y -= speed * GetFrameTime();
-    if (IsKeyDown(KEY_S)||IsKeyDown(KEY_DOWN)) proposedPosition.y += speed * GetFrameTime();
-    if (IsKeyDown(KEY_A)||IsKeyDown(KEY_LEFT)) proposedPosition.x -= speed * GetFrameTime();
-    if (IsKeyDown(KEY_D)||IsKeyDown(KEY_RIGHT)) proposedPosition.x += speed * GetFrameTime();
+    if (input.x != 0 || input.y != 0) {
+        float length = sqrtf(input.x * input.x + input.y * input.y);
+        input.x /= length;
+        input.y /= length;
+    }
+
+    Vector2 proposedPosition = position;
+    proposedPosition.x += input.x * speed * GetFrameTime();
+    proposedPosition.y += input.y * speed * GetFrameTime();
 
     if (IsKeyPressed(KEY_Q)) {
         if(!inventory.empty()) {
